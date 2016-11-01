@@ -1,1 +1,4 @@
-Pillow==3.3.0
+# requirements.txt
+# pip install -r requirements.txt
+argparse>=1.4.0
+Pillow>=3.3.0
