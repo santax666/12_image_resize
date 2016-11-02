@@ -16,51 +16,30 @@ def create_parser():
 
 
 def arguments_checking(width, height, scale, size):
-    MAX_SCALE = 5
-    MIN_SCALE = 0
+    MIN_VALUE = 0
     arguments_names = ('ширины', 'высоты', 'масштаба',)
     error_texts = ('Ширина и Высота не могут быть указаны вместе с Масштабом!',
                    'Значение {0} не может быть меньше или равным нулю!',
-                   'Значение {0} очень большое: картинка будет расплывчатой!',
                    'Не соблюдены пропорции! Изображение будет искажено!',)
+    for argument_num, argument in enumerate((width, height, scale)):
+        if argument is not None:
+            if argument <= MIN_VALUE:
+                print(error_texts[1].format(arguments_names[argument_num]))
+                return
     if scale is None:
         if width is None:
-            if height / size[1] > MAX_SCALE:
-                print(error_texts[2].format(arguments_names[1]))
-            elif height <= MIN_SCALE:
-                print(error_texts[1].format(arguments_names[1]))
-            else:
-                return int(size[0] * height / size[1]), height
+            return int(size[0] * height / size[1]), height
         elif height is None:
-            if width / size[0] > MAX_SCALE:
-                print(error_texts[2].format(arguments_names[0]))
-            elif width <= MIN_SCALE:
-                print(error_texts[1].format(arguments_names[0]))
-            else:
-                return width, int(size[1] * width / size[0])
+            return width, int(size[1] * width / size[0])
         else:
-            if height / size[1] > MAX_SCALE:
-                print(error_texts[2].format(arguments_names[1]))
-            elif height <= MIN_SCALE:
-                print(error_texts[1].format(arguments_names[1]))
-            elif width / size[0] > MAX_SCALE:
-                print(error_texts[2].format(arguments_names[0]))
-            elif width <= MIN_SCALE:
-                print(error_texts[1].format(arguments_names[0]))
-            else:
-                if width / size[0] != height / size[1]:
-                    print(error_texts[3])
-                return width, height
+            if width / size[0] != height / size[1]:
+                print(error_texts[2])
+            return width, height
     else:
         if (width or height) is not None:
             print(error_texts[0])
         else:
-            if scale > MAX_SCALE:
-                print(error_texts[2].format(arguments_names[2]))
-            elif scale <= MIN_SCALE:
-                print(error_texts[1].format(arguments_names[2]))
-            else:
-                return int(scale * size[0]), int(scale * size[1])
+            return int(scale * size[0]), int(scale * size[1])
 
 
 def create_output_name(path_file, sides):
